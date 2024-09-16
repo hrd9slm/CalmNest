@@ -1,7 +1,7 @@
 import React from 'react';
-import Image from 'next/image';
 
 const Hero: React.FC = () => {
+
   return (
     <div className="bg-blue-50 py-10 pb-32">
       <div className="container mx-auto px-6 text-center md:text-left">
@@ -20,7 +20,7 @@ const Hero: React.FC = () => {
               Commencez votre voyage
             </button>
           </div>
-          <div className="md:w-1/3 mt-8 md:mt-0 ml-24">
+          <div className="md:w-1/3 mt-8 md:mt-0 md:ml-32">
             <img
               src="/images/hero1.jpg"
               alt="Calm and serene landscape"

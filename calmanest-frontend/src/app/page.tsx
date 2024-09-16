@@ -1,17 +1,22 @@
-import CurvedSection from "@/components/CurvedSection";
-import CurvedSectionTwo from "@/components/CurvedSectionTwo";
-import Feature from "@/components/Feature";
-import Footer from "@/components/Footer";
-import Hero from "@/components/Hero";
-import Image from "next/image";
+import CurvedSection from "@/components/Shapes/CurvedSection";
+import CurvedSectionTwo from "@/components/Shapes/CurvedSectionTwo";
+import Features from "@/components/Home/Features";
+
+import Footer from "@/components/Layouts/Footer";
+import Hero from "@/components/Home/Hero";
+import Team from "@/components/Home/Team";
+import WavyCurveUp from "@/components/Shapes/WavyCurveUp";
+
 
 export default function Home() {
   return (
    <div>
 <Hero/>
 <CurvedSection/>
-<Feature/>
+<Team/>
 <CurvedSectionTwo/>
+<Features/>
+<WavyCurveUp/>
 <Footer/>
    </div>
   );

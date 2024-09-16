@@ -5,7 +5,7 @@ const CurvedSection: React.FC = () => {
     <div className="relative bg-pink-100" >
       <svg
         className="absolute bottom-0 left-0 w-full"
-        viewBox="0 0 1440 320"
+        viewBox="0 -25 1440 320"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
