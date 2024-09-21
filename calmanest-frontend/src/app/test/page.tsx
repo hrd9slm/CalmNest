@@ -1,4 +1,6 @@
 import Categories from '@/components/Categories'
+import AddArticle from '@/components/dashboard/AddArticle '
+import ListArticle from '@/components/dashboard/ListArticle'
 import TherapeuteForm from '@/components/TherapeuteForm'
 
 import React from 'react'
@@ -6,9 +8,9 @@ import React from 'react'
 const page = () => {
   return (
     <div>
-     <TherapeuteForm/> 
 
-
+<AddArticle/>
+<ListArticle/>
     </div>
   )
 }

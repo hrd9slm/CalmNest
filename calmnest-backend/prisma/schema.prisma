@@ -1,0 +1,148 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                Int              @id @default(autoincrement())
+  username          String           @unique
+  email             String           @unique
+  passwordHash      String           @map("password_hash")
+  createdAt         DateTime         @default(now()) @map("created_at")
+  Profile           Profile?
+  UserRoles         UserRole[]
+  Comments          Comment[]
+  Progress          Progress[]
+  Recommendations   Recommendation[]
+  Purchases         Purchase[]       
+  Meditations       Meditation[]     
+  Blogs             Blog[]           
+}
+
+model Profile {
+  profileId          Int      @id @default(autoincrement())
+  userId             Int      @unique
+  name               String
+  dateOfBirth        DateTime
+  qualifications     String?
+  experience         String?
+  profilePicture     String?
+  bio                String?
+  User               User     @relation(fields: [userId], references: [id])
+}
+
+model Meditation {
+  meditationId Int      @id @default(autoincrement())
+  title        String
+  category     String
+  duration     Int
+
+  videoUrl     String?  
+  pdfUrl       String?  
+  description  String
+  themePack    String?
+  userId       Int      
+  User         User     @relation(fields: [userId], references: [id]) 
+  Progress     Progress[]
+  Recommendations Recommendation[]
+  Programs      Program[] 
+}
+
+model Program {
+  programId     Int      @id @default(autoincrement())
+  title         String
+  description   String
+  price         Float
+  Meditations   Meditation[] 
+  TherapySessions TherapySession[] 
+  Purchases     Purchase[] 
+}
+
+model TherapySession {
+  sessionId     Int      @id @default(autoincrement())
+  title         String
+  description   String
+  duration      Int
+  audioUrl      String
+  Progress      Progress[] 
+  Recommendations Recommendation[] 
+  Programs      Program[] 
+}
+
+model Progress {
+  progressId    Int      @id @default(autoincrement())
+  userId        Int
+  meditationId  Int?     
+  sessionId     Int?     
+  date          DateTime
+  duration      Int
+  completed     Boolean
+  User          User     @relation(fields: [userId], references: [id])
+  Meditation    Meditation? @relation(fields: [meditationId], references: [meditationId])
+  TherapySession TherapySession? @relation(fields: [sessionId], references: [sessionId]) 
+}
+
+model Category {
+  categoryId Int      @id @default(autoincrement())
+  name       String
+}
+
+model Recommendation {
+  recommendationId Int      @id @default(autoincrement())
+  userId           Int
+  meditationId     Int?     
+  sessionId        Int?     
+  createdDate      DateTime
+  User             User     @relation(fields: [userId], references: [id])
+  Meditation       Meditation? @relation(fields: [meditationId], references: [meditationId])
+  TherapySession   TherapySession? @relation(fields: [sessionId], references: [sessionId]) 
+}
+
+model Blog {
+  blogId       Int      @id @default(autoincrement())
+  title        String
+  content      String
+  image        String?
+  createdDate  DateTime
+  userId      Int      
+  User         User     @relation(fields: [userId], references: [id]) 
+}
+
+model Comment {
+  commentId    Int      @id @default(autoincrement())
+  userId       Int
+  contentId    Int
+  contentType  String
+  comment      String
+  createdDate  DateTime
+  User         User     @relation(fields: [userId], references: [id])
+}
+
+model Role {
+  roleId Int    @id @default(autoincrement())
+  name   String @unique
+  UserRoles UserRole[]
+}
+
+model UserRole {
+  userRoleId Int  @id @default(autoincrement())
+  userId     Int
+  roleId     Int
+  User       User @relation(fields: [userId], references: [id])
+  Role       Role @relation(fields: [roleId], references: [roleId])
+
+  @@unique([userId, roleId]) 
+}
+
+model Purchase {
+  purchaseId Int      @id @default(autoincrement())
+  userId     Int
+  programId  Int
+  purchaseDate DateTime @default(now())
+  User       User @relation(fields: [userId], references: [id])
+  Program    Program @relation(fields: [programId], references: [programId])
+}

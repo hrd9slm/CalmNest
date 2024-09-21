@@ -14,11 +14,12 @@ const Hero: React.FC = () => {
               Plongez dans CalmNest, votre partenaire pour un bien-être mental et émotionnel optimal. Face au stress et à l'anxiété, CalmNest vous offre un havre de paix et de soutien. Accédez à des outils de journalisation quotidienne, suivez vos progrès avec des tableaux de bord personnalisés, et connectez-vous à des groupes de soutien thématiques. Grâce à une interface intuitive, CalmNest rend votre parcours de bien-être simple et gratifiant. Rejoignez-nous pour reprendre le contrôle de votre santé mentale dès maintenant.
             </p>
             <button
-              style={{ backgroundColor: '#FFB6C1' }}
-              className="text-dark-blue px-4 py-2 rounded-full hover:bg-pink-300 font-bold"
+            
+              className="text-dark-blue px-4 py-2 rounded-full bg-light-pink hover:bg-pink-300 font-bold"
             >
               Commencez votre voyage
             </button>
+            
           </div>
           <div className="md:w-1/3 mt-8 md:mt-0 md:ml-32">
             <img

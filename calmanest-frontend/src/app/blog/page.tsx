@@ -8,8 +8,8 @@ import Advertisement from '@/components/Advertisement';
 import Categories from '@/components/Categories';
 import CurvedSectionTwo from '@/components/Shapes/CurvedSectionThree';
 import CurvedSectionThree from '@/components/Shapes/CurvedSectionThree';
-import CurvedSectionFour from '@/components/CurvedSectionFour';
-import Footer from '@/components/Footer';
+import CurvedSectionFour from '@/components/Shapes/CurvedSectionFour';
+
 import Banner from '@/components/Banner';
 
 const Home: React.FC = () => {
