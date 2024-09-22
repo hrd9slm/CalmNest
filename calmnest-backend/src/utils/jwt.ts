@@ -1,9 +1,9 @@
 import jwt, { SignOptions, JwtPayload } from "jsonwebtoken";
 
 interface User {
-  id: string;
+  id: Number;
   email: string;
-  isAdmin:boolean;
+ 
   
 }
 
@@ -11,7 +11,7 @@ function generateToken(user: User): string {
   const payload = {
     id: user.id,
     email: user.email,
-    isAdmin:user.isAdmin,
+ 
   };
 
   const secret = process.env.JWT_SECRET as string; 

@@ -11,10 +11,10 @@ model User {
   id                Int              @id @default(autoincrement())
   username          String           @unique
   email             String           @unique
-  passwordHash      String           @map("password_hash")
+  password      String           @map("password")
   createdAt         DateTime         @default(now()) @map("created_at")
+  role              UserRoleEnum     
   Profile           Profile?
-  UserRoles         UserRole[]
   Comments          Comment[]
   Progress          Progress[]
   Recommendations   Recommendation[]
@@ -122,22 +122,6 @@ model Comment {
   User         User     @relation(fields: [userId], references: [id])
 }
 
-model Role {
-  roleId Int    @id @default(autoincrement())
-  name   String @unique
-  UserRoles UserRole[]
-}
-
-model UserRole {
-  userRoleId Int  @id @default(autoincrement())
-  userId     Int
-  roleId     Int
-  User       User @relation(fields: [userId], references: [id])
-  Role       Role @relation(fields: [roleId], references: [roleId])
-
-  @@unique([userId, roleId]) 
-}
-
 model Purchase {
   purchaseId Int      @id @default(autoincrement())
   userId     Int
@@ -145,4 +129,11 @@ model Purchase {
   purchaseDate DateTime @default(now())
   User       User @relation(fields: [userId], references: [id])
   Program    Program @relation(fields: [programId], references: [programId])
+}
+
+// Enum pour les rôles d'utilisateur
+enum UserRoleEnum {
+  user
+  admin
+  therapist
 }
