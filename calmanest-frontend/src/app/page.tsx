@@ -17,7 +17,7 @@ export default function Home() {
 <CurvedSectionTwo/>
 <Features/>
 <WavyCurveUp/>
-<Footer/>
+
    </div>
   );
 }

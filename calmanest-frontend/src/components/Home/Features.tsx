@@ -5,22 +5,22 @@ const Features: React.FC = () => {
     {
       title: 'Daily Journaling',
       description: 'Track your thoughts and emotions with our easy-to-use journaling tool.',
-      icon: '/images/journaling-icon.png', // Example icon path
+      icon: '', 
     },
     {
       title: 'Personalized Dashboards',
       description: 'Monitor your progress with customizable dashboards tailored to your needs.',
-      icon: '/images/dashboard-icon.png',
+      icon: '',
     },
     {
       title: 'Support Groups',
       description: 'Connect with others in themed support groups for shared experiences.',
-      icon: '/images/support-icon.png',
+      icon: '',
     },
     {
       title: 'Intuitive Interface',
       description: 'Enjoy a seamless experience with our user-friendly interface.',
-      icon: '/images/interface-icon.png',
+      icon: '',
     },
   ];
 

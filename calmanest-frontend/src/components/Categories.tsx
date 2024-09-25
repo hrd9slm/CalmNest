@@ -15,16 +15,7 @@ const categories: Category[] = [
   { id: 5, name: 'Travel', image: 'https://placehold.co/100x100' },
   { id: 6, name: 'Adventure', image: 'https://placehold.co/100x100' },
   { id: 7, name: 'Lifestyle', image: 'https://placehold.co/100x100' },
-  { id: 7, name: 'Lifestyle', image: 'https://placehold.co/100x100' },
-  { id: 7, name: 'Lifestyle', image: 'https://placehold.co/100x100' },
-  { id: 7, name: 'Lifestyle', image: 'https://placehold.co/100x100' },
-  { id: 7, name: 'Lifestyle', image: 'https://placehold.co/100x100' },
-  { id: 7, name: 'Lifestyle', image: 'https://placehold.co/100x100' },
-  { id: 7, name: 'Lifestyle', image: 'https://placehold.co/100x100' },
-  { id: 7, name: 'Lifestyle', image: 'https://placehold.co/100x100' },
-  { id: 7, name: 'Lifestyle', image: 'https://placehold.co/100x100' },
-  { id: 7, name: 'Lifestyle', image: 'https://placehold.co/100x100' },
-  { id: 7, name: 'Lifestyle', image: 'https://placehold.co/100x100' },
+
 ];
 
 const Categories: React.FC = () => {

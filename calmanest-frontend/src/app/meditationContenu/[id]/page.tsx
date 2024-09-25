@@ -1,4 +1,3 @@
-// pages/meditation.tsx
 import React from 'react';
 import VideoPlayer from '@/components/VideoPlayer';
 import VideoSidebar from '@/components/VideoSidebar';

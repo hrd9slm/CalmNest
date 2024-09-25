@@ -10,7 +10,7 @@ const AddArticle = () => {
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    // Create a new article object
+  
     const newArticle = {
       title,
       content,
@@ -18,10 +18,10 @@ const AddArticle = () => {
   
     };
 
-    // Here you can handle the submission, e.g., send the newArticle to an API
+ 
     console.log("Article submitted:", newArticle);
 
-    // Reset form fields
+
     setTitle("");
     setContent("");
     setImage(null);

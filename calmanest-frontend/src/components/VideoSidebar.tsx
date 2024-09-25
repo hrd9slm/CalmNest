@@ -1,4 +1,3 @@
-// components/VideoSidebar.tsx
 import React from 'react';
 
 interface Video {

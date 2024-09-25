@@ -1,3 +1,5 @@
+// schema.prisma
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
@@ -8,132 +10,86 @@ generator client {
 }
 
 model User {
-  id                Int              @id @default(autoincrement())
-  username          String           @unique
-  email             String           @unique
-  password      String           @map("password")
-  createdAt         DateTime         @default(now()) @map("created_at")
-  role              UserRoleEnum     
-  Profile           Profile?
-  Comments          Comment[]
-  Progress          Progress[]
-  Recommendations   Recommendation[]
-  Purchases         Purchase[]       
-  Meditations       Meditation[]     
-  Blogs             Blog[]           
+  id             Int           @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  email          String        @unique
+  password       String
+  gender         String
+  birthDate      DateTime
+  role           String
+  categories     Category[]    @relation("UserCategories")
+  articles       Article[]     @relation("UserArticles")
+  programs       Program[]     @relation("UserPrograms")
+  unitLearnings  UnitLearning[] @relation("UserUnitLearnings")
+  subscriptions  Subscription[] @relation("UserSubscriptions")
+  profile        Profile?      @relation("UserProfile")
 }
 
 model Profile {
-  profileId          Int      @id @default(autoincrement())
-  userId             Int      @unique
-  name               String
-  dateOfBirth        DateTime
-  qualifications     String?
-  experience         String?
-  profilePicture     String?
-  bio                String?
-  User               User     @relation(fields: [userId], references: [id])
-}
-
-model Meditation {
-  meditationId Int      @id @default(autoincrement())
-  title        String
-  category     String
-  duration     Int
-
-  videoUrl     String?  
-  pdfUrl       String?  
-  description  String
-  themePack    String?
-  userId       Int      
-  User         User     @relation(fields: [userId], references: [id]) 
-  Progress     Progress[]
-  Recommendations Recommendation[]
-  Programs      Program[] 
-}
-
-model Program {
-  programId     Int      @id @default(autoincrement())
-  title         String
-  description   String
-  price         Float
-  Meditations   Meditation[] 
-  TherapySessions TherapySession[] 
-  Purchases     Purchase[] 
-}
-
-model TherapySession {
-  sessionId     Int      @id @default(autoincrement())
-  title         String
-  description   String
-  duration      Int
-  audioUrl      String
-  Progress      Progress[] 
-  Recommendations Recommendation[] 
-  Programs      Program[] 
-}
-
-model Progress {
-  progressId    Int      @id @default(autoincrement())
-  userId        Int
-  meditationId  Int?     
-  sessionId     Int?     
-  date          DateTime
-  duration      Int
-  completed     Boolean
-  User          User     @relation(fields: [userId], references: [id])
-  Meditation    Meditation? @relation(fields: [meditationId], references: [meditationId])
-  TherapySession TherapySession? @relation(fields: [sessionId], references: [sessionId]) 
+  id              Int      @id @default(autoincrement())
+  qualifications  Json
+  experience      Json
+  profilePicture  String?
+  bio             String?
+  user            User     @relation("UserProfile", fields: [userId], references: [id])
+  userId          Int      @unique
 }
 
 model Category {
-  categoryId Int      @id @default(autoincrement())
-  name       String
-}
-
-model Recommendation {
-  recommendationId Int      @id @default(autoincrement())
-  userId           Int
-  meditationId     Int?     
-  sessionId        Int?     
-  createdDate      DateTime
-  User             User     @relation(fields: [userId], references: [id])
-  Meditation       Meditation? @relation(fields: [meditationId], references: [meditationId])
-  TherapySession   TherapySession? @relation(fields: [sessionId], references: [sessionId]) 
-}
-
-model Blog {
-  blogId       Int      @id @default(autoincrement())
+  id           Int          @id @default(autoincrement())
   title        String
+  imageUrl     String? 
+  user         User?        @relation("UserCategories", fields: [userId], references: [id])
+  userId       Int?
+}
+
+model Article {
+  id           Int          @id @default(autoincrement())
+  image        String
   content      String
-  image        String?
-  createdDate  DateTime
-  userId      Int      
-  User         User     @relation(fields: [userId], references: [id]) 
+  title        String
+  creationDate DateTime
+  user         User?        @relation("UserArticles", fields: [userId], references: [id])
+  userId       Int?
+
 }
 
-model Comment {
-  commentId    Int      @id @default(autoincrement())
-  userId       Int
-  contentId    Int
-  contentType  String
-  comment      String
-  createdDate  DateTime
-  User         User     @relation(fields: [userId], references: [id])
+model Program {
+  id           Int           @id @default(autoincrement())
+  title        String
+  description  String
+  creationDate DateTime
+  user         User?         @relation("UserPrograms", fields: [userId], references: [id])
+  userId       Int?
+  unitLearnings UnitLearning[] @relation("ProgramUnitLearnings")
 }
 
-model Purchase {
-  purchaseId Int      @id @default(autoincrement())
-  userId     Int
-  programId  Int
-  purchaseDate DateTime @default(now())
-  User       User @relation(fields: [userId], references: [id])
-  Program    Program @relation(fields: [programId], references: [programId])
+model UnitLearning {
+  id           Int          @id @default(autoincrement())
+  title        String
+  description  String
+  videoUrl     String
+  user         User?        @relation("UserUnitLearnings", fields: [userId], references: [id])
+  userId       Int?
+  program      Program?     @relation("ProgramUnitLearnings", fields: [programId], references: [id])
+  programId    Int?
 }
 
-// Enum pour les rôles d'utilisateur
-enum UserRoleEnum {
-  user
-  admin
-  therapist
+model Subscription {
+  id           Int          @id @default(autoincrement())
+  startDate    DateTime
+  endDate      DateTime
+  price        Float
+  type         String
+  user         User?        @relation("UserSubscriptions", fields: [userId], references: [id])
+  userId       Int?
+}
+
+model Statistic {
+  id                 Int    @id @default(autoincrement())
+  numberOfUsers      Int
+  numberOfUnitLearnings Int
+  numberOfPrograms   Int
+  numberOfSubscriptions Int
 }

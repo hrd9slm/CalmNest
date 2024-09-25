@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 // Fonction pour enregistrer un nouvel utilisateur
 async function register(req: Request, res: Response) {
-  const { username, email, password } = req.body;
+  const { firstName, lastName, email, password, gender, birthDate } = req.body;
 
   try {
     // Vérifier si l'utilisateur existe déjà
@@ -23,17 +23,27 @@ async function register(req: Request, res: Response) {
     // Hacher le mot de passe
     const hashedPassword = await hashPassword(password);
 
-    // Créer un nouvel utilisateur
+    // Créer un nouvel utilisateur avec un profil par défaut
     const newUser = await prisma.user.create({
       data: {
-        username,
+        firstName,
+        lastName,
         email,
         password: hashedPassword,
-        role: 'user', 
+        gender,
+        birthDate: new Date(birthDate), // Assurez-vous que birthDate est un objet Date
+        role: 'user',
+        profile: {
+          create: {
+            qualifications: [],
+            experience: [],
+            profilePicture: null,
+            bio: '',
+          },
+        },
       },
     });
 
-    
     const token = generateToken({ id: newUser.id, email: newUser.email });
 
     return res.status(201).json({ token });
@@ -64,7 +74,7 @@ async function login(req: Request, res: Response) {
     }
 
     // Générer un token JWT
-    const token = generateToken({ id: user.id, email: user.email});
+    const token = generateToken({ id: user.id, email: user.email });
 
     return res.status(200).json({ token });
   } catch (error) {
@@ -76,7 +86,9 @@ async function login(req: Request, res: Response) {
 // Fonction pour obtenir tous les utilisateurs (CRUD)
 async function getAllUsers(req: Request, res: Response) {
   try {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+      include: { profile: true },
+    });
     return res.status(200).json(users);
   } catch (error) {
     console.error(error);
@@ -91,6 +103,7 @@ async function getUserById(req: Request, res: Response) {
   try {
     const user = await prisma.user.findUnique({
       where: { id: Number(id) },
+      include: { profile: true },
     });
 
     if (!user) {
@@ -107,13 +120,14 @@ async function getUserById(req: Request, res: Response) {
 // Fonction pour mettre à jour un utilisateur
 async function updateUser(req: Request, res: Response) {
   const { id } = req.params;
-  const { username, email, role } = req.body;
+  const { firstName, lastName, email, role } = req.body;
 
   try {
     const updatedUser = await prisma.user.update({
       where: { id: Number(id) },
       data: {
-        username,
+        firstName,
+        lastName,
         email,
         role,
       },
@@ -142,5 +156,4 @@ async function deleteUser(req: Request, res: Response) {
   }
 }
 
-// Exporter les fonctions
 export { register, login, getAllUsers, getUserById, updateUser, deleteUser };

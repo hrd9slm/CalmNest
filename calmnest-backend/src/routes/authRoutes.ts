@@ -11,19 +11,18 @@ import {
 import authenticateUser from "../middlewares/AuthMiddleware";
 import { IsAdmin } from "../middlewares/IsAdminMiddleware";
 
-const authrouter = Router();
+const authRouter = Router();
 
-authrouter.post("/register", register);
+authRouter.post("/register", register);
 
-authrouter.post("/login", login);
+authRouter.post("/login", login);
 
-authrouter.get("/", getAllUsers);
+authRouter.get("/", getAllUsers);
 
-// (accessible uniquement aux admins)
-authrouter.get("/:id", getUserById);
+authRouter.get("/:id", getUserById);
 
-authrouter.put("/:id", updateUser);
+authRouter.put("/:id", updateUser);
 
-authrouter.delete("/:id", deleteUser);
+authRouter.delete("/:id", deleteUser);
 
-export default authrouter;
+export default authRouter;

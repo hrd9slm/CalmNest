@@ -1,4 +1,3 @@
-// pages/demo.tsx
 import React from 'react';
 
 const DemoPage: React.FC = () => {
