@@ -30,4 +30,12 @@ function verifyToken(token: string): JwtPayload | null {
   }
 }
 
-export { generateToken, verifyToken };
+function getIdFromToken(token: string): number | null {
+  const payload = verifyToken(token);
+  if (payload && typeof payload.id === 'number') {
+    return payload.id;
+  }
+  return null;
+}
+
+export { generateToken, verifyToken, getIdFromToken };

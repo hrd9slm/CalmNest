@@ -1,4 +1,3 @@
-// authRoutes.ts
 import { Router } from "express";
 import {
   register,
@@ -17,12 +16,12 @@ authRouter.post("/register", register);
 
 authRouter.post("/login", login);
 
-authRouter.get("/", getAllUsers);
+authRouter.get("/getAllUsers", authenticateUser,IsAdmin,getAllUsers);
 
-authRouter.get("/:id", getUserById);
+authRouter.get("/user/:id", authenticateUser,IsAdmin, getUserById);
+authRouter.put("/user/:id", authenticateUser,IsAdmin, updateUser);
+authRouter.delete("/user/:id", authenticateUser, IsAdmin,deleteUser);
 
-authRouter.put("/:id", updateUser);
 
-authRouter.delete("/:id", deleteUser);
 
 export default authRouter;
