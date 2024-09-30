@@ -2,7 +2,7 @@ import React from 'react';
 
 const Team: React.FC = () => {
   return (
-    <div className= "" style={{ backgroundColor: '#ffe9ec' }}>
+    <div   id="team"className= "" style={{ backgroundColor: '#ffe9ec' }}>
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center">
         <div className="md:w-1/2 flex justify-center md:justify-start">
           <div className="grid grid-cols-2 gap-4">

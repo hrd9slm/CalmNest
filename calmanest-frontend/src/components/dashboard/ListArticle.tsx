@@ -1,29 +1,46 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { fetchFormData } from '../../utils/fetchFormData';
 
 interface Article {
   id: number;
   title: string;
   content: string;
-  image: File | null;
+  image: string; 
 }
 
 const ListArticle: React.FC = () => {
-  const [articles, setArticles] = useState<Article[]>([
-    { id: 1, title: "Article 1", content: "Content 1", image: null },
-    { id: 2, title: "Article 2", content: "Content 2", image: null },
-  ]);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [currentArticle, setCurrentArticle] = useState<Article | null>(null);
+
+  useEffect(() => {
+    // Fetch articles from the API
+    const fetchArticles = async () => {
+      try {
+        const response = await fetchFormData('/articles', { method: 'GET' });
+        setArticles(response);
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+      }
+    };
+
+    fetchArticles();
+  }, []);
 
   const handleEdit = (article: Article) => {
     setCurrentArticle(article);
     setIsModalOpen(true);
   };
 
-  const handleDelete = (id: number) => {
-    setArticles(articles.filter((article) => article.id !== id));
+  const handleDelete = async (id: number) => {
+    try {
+      await fetchFormData(`/article/${id}`, { method: 'DELETE' });
+      setArticles(articles.filter((article) => article.id !== id));
+    } catch (error) {
+      console.error("Error deleting article:", error);
+    }
   };
 
   const handleModalClose = () => {
@@ -31,13 +48,29 @@ const ListArticle: React.FC = () => {
     setCurrentArticle(null);
   };
 
-  const handleModalSave = () => {
+  const handleModalSave = async () => {
     if (currentArticle) {
-      setArticles(
-        articles.map((article) =>
-          article.id === currentArticle.id ? currentArticle : article
-        )
-      );
+      const formData = new FormData();
+      formData.append("title", currentArticle.title);
+      formData.append("content", currentArticle.content);
+      if (currentArticle.image) {
+        formData.append("image", currentArticle.image);
+      }
+
+      try {
+        const response = await fetchFormData(`/article/${currentArticle.id}`, {
+          method: 'PUT',
+          body: formData,
+        });
+
+        setArticles(
+          articles.map((article) =>
+            article.id === currentArticle.id ? response : article
+          )
+        );
+      } catch (error) {
+        console.error("Error updating article:", error);
+      }
     }
     handleModalClose();
   };
@@ -49,6 +82,7 @@ const ListArticle: React.FC = () => {
           <tr>
             <th className="p-4 text-left text-xs font-semibold text-gray-800">Title</th>
             <th className="p-4 text-left text-xs font-semibold text-gray-800">Content</th>
+            <th className="p-4 text-left text-xs font-semibold text-gray-800">Image</th>
             <th className="p-4 text-left text-xs font-semibold text-gray-800">Actions</th>
           </tr>
         </thead>
@@ -57,6 +91,11 @@ const ListArticle: React.FC = () => {
             <tr key={article.id} className="hover:bg-gray-50">
               <td className="p-4 text-[15px] text-gray-800">{article.title}</td>
               <td className="p-4 text-[15px] text-gray-800">{article.content}</td>
+              <td className="p-4 text-[15px] text-gray-800">
+                {article.image && (
+                  <img src={article.image} alt={article.title} className="w-16 h-16 object-cover" />
+                )}
+              </td>
               <td className="p-4">
                 <button onClick={() => handleEdit(article)} className="mr-4" title="Edit">
                   <FaEdit className="w-5 fill-blue-500 hover:fill-blue-700" />
@@ -103,7 +142,7 @@ const ListArticle: React.FC = () => {
                 onChange={(e) => {
                   const files = (e.target as HTMLInputElement).files;
                   if (files && files.length > 0) {
-                    setCurrentArticle({ ...currentArticle, image: files[0] });
+                    setCurrentArticle({ ...currentArticle, image: URL.createObjectURL(files[0]) });
                   }
                 }}
                 className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"

@@ -21,8 +21,8 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userId, onClose }) => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const data = await fetchInstance(`/profile/${userId}`);
-     
+        const data = await fetchInstance('/profile'); // No userId in the URL
+        setProfile(data);
         setLoading(false);
       } catch (error) {
         console.error('Erreur lors de la récupération du profil:', error);
@@ -32,8 +32,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userId, onClose }) => {
     };
 
     fetchProfile();
-  }, [userId]);
-
+  }, []);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index?: number) => {
     const { name, value } = e.target;
     if (index !== undefined && (name === 'qualifications' || name === 'experience')) {

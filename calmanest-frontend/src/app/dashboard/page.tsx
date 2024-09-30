@@ -6,8 +6,12 @@ import AddArticle from "@/components/dashboard/AddArticle";
 import ProfileForm from "@/components/dashboard/ProfileForm";
 import ProfileInfo from "@/components/dashboard/ProfileInfo";
 import MeditationAndProgramForm from "@/components/dashboard/MeditationAndProgramForm";
+import CategoryList from "@/components/dashboard/CategoryList"; // Import the CategoryList component
+import CategoryForm from "@/components/dashboard/CategoryForm"; // Import the CategoryForm component
+
 const Page = () => {
   const [isAddArticleModalOpen, setIsAddArticleModalOpen] = useState(false);
+  const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] = useState(false); 
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
   const handleAddArticleModalOpen = () => {
@@ -18,16 +22,19 @@ const Page = () => {
     setIsAddArticleModalOpen(false);
   };
 
+  const handleAddCategoryModalOpen = () => {
+    setIsAddCategoryModalOpen(true); 
+  };
+
+  const handleAddCategoryModalClose = () => {
+    setIsAddCategoryModalOpen(false); 
+  };
+
   const handleSectionClick = (section: string) => (e: MouseEvent) => {
     e.preventDefault();
     setActiveSection(section);
   };
 
-  const userProfile = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    bio: "Software developer with a passion for open-source projects.",
-  };
 
   return (
     <div className="flex">
@@ -40,7 +47,6 @@ const Page = () => {
         <div className="mt-6">
           <h6 className="text-blue-600 text-sm font-bold px-4">Information</h6>
           <ul className="mt-3">
-           
             <li>
               <Link
                 href="/posts"
@@ -97,31 +103,26 @@ const Page = () => {
                 <span>Meditations</span>
               </Link>
             </li>
-        
             <li>
               <Link
-                href="/promote"
-                onClick={handleSectionClick("promote")}
+                href="/categories" 
+                onClick={handleSectionClick("categories")} 
                 className="text-black hover:text-blue-600 text-sm flex items-center hover:bg-blue-50 rounded px-4 py-3 transition-all"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
                   className="w-[18px] h-[18px] mr-4"
-                  viewBox="0 0 512.003 512.003"
+                  viewBox="0 0 24 24"
                 >
                   <path
-                    d="M475.244 264.501a15.592 15.592 0 0 1 0-16.998l18.698-28.74c17.032-26.178 5.556-61.348-23.554-72.491l-32.02-12.26a15.596 15.596 0 0 1-9.992-13.754l-1.765-34.24c-1.608-31.184-31.563-52.902-61.667-44.802l-33.109 8.902a15.598 15.598 0 0 1-16.167-5.254l-21.555-26.665c-19.631-24.284-56.625-24.245-76.223 0l-21.556 26.666a15.597 15.597 0 0 1-16.167 5.254l-33.111-8.902c-30.163-8.112-60.063 13.678-61.667 44.802l-1.765 34.24a15.598 15.598 0 0 1-9.992 13.753l-32.018 12.26c-29.171 11.166-40.555 46.365-23.556 72.492l18.699 28.739a15.596 15.596 0 0 1 0 16.998L18.061 293.24c-17.034 26.181-5.554 61.352 23.554 72.492l32.02 12.26a15.598 15.598 0 0 1 9.992 13.754l1.765 34.24c1.608 31.19 31.568 52.899 61.667 44.802l33.109-8.902a15.602 15.602 0 0 1 16.168 5.254l21.555 26.664c19.635 24.291 56.628 24.241 76.223 0l21.555-26.664a15.607 15.607 0 0 1 16.167-5.254l33.111 8.902c30.155 8.115 60.062-13.674 61.667-44.802l1.765-34.24a15.598 15.598 0 0 1 9.992-13.753l32.018-12.26c29.169-11.166 40.554-46.364 23.557-72.493l-18.702-28.739zm-16.806 70.02-32.02 12.26c-18.089 6.926-30.421 23.9-31.418 43.243l-1.765 34.24c-.511 9.921-10.036 16.821-19.612 14.249l-33.111-8.902c-18.705-5.032-38.661 1.455-50.836 16.518l-21.553 26.664c-6.245 7.725-18.009 7.709-24.242 0l-21.553-26.664c-9.438-11.676-23.55-18.198-38.132-18.198-4.229 0-8.499.548-12.706 1.68l-33.111 8.902c-9.596 2.576-19.1-4.348-19.612-14.249l-1.765-34.24c-.997-19.343-13.33-36.318-31.418-43.243l-32.02-12.261c-9.277-3.552-12.896-14.744-7.49-23.053l18.698-28.739c10.563-16.236 10.563-37.218 0-53.452l-18.698-28.739c-5.418-8.326-1.768-19.509 7.491-23.054l32.02-12.26c18.089-6.926 30.421-23.9 31.418-43.243l1.765-34.24c.511-9.921 10.036-16.821 19.612-14.249l33.111 8.902c18.705 5.031 38.66-1.455 50.836-16.518l21.555-26.665c6.245-7.724 18.01-7.708 24.241 0l21.555 26.666c12.178 15.063 32.129 21.549 50.836 16.517l33.111-8.902c9.595-2.577 19.1 4.348 19.612 14.249L395 121.98c.997 19.343 13.33 36.318 31.418 43.243l32.021 12.261c9.276 3.55 12.895 14.744 7.49 23.053l-18.697 28.738c-10.565 16.235-10.565 37.217-.001 53.453l18.698 28.738c5.416 8.328 1.768 19.51-7.491 23.055z"
-                    data-original="#000000"
-                  />
-                  <path
-                    d="M339.485 170.845c-6.525-6.525-17.106-6.525-23.632 0L159.887 326.811c-6.525 6.525-6.525 17.106.001 23.632 3.263 3.263 7.54 4.895 11.816 4.895s8.554-1.632 11.816-4.895l155.966-155.967c6.526-6.524 6.526-17.105-.001-23.631zm-151.071-4.895c-18.429 0-33.421 14.993-33.421 33.421 0 18.429 14.994 33.421 33.421 33.421 18.429 0 33.421-14.993 33.421-33.421.001-18.428-14.992-33.421-33.421-33.421zm122.545 122.545c-18.429 0-33.421 14.993-33.421 33.421 0 18.429 14.993 33.421 33.421 33.421s33.421-14.993 33.421-33.421c.001-18.428-14.992-33.421-33.421-33.421z"
-                    data-original="#000000"
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"
                   />
                 </svg>
-                <span>Promote</span>
+                <span>Categories</span>
               </Link>
             </li>
+          
           </ul>
         </div>
       
@@ -172,7 +173,7 @@ const Page = () => {
 
       <div className="ml-[250px] p-6 w-full">
         {activeSection === "posts" && (
-          <div className=" mx-14">
+          <div className="mx-14">
             <div className="text-right">
               <button
                 onClick={handleAddArticleModalOpen}
@@ -181,15 +182,28 @@ const Page = () => {
                 [+]
               </button>
             </div>
-
             <ListArticle />
+          </div>
+        )}
+
+        {activeSection === "categories" && (
+          <div className="mt-6 mx-14">
+            <div className="text-right">
+              <button
+                onClick={handleAddCategoryModalOpen} // Open category modal
+                className="text-blue-600 text-2xl mb-4 mr-1"
+              >
+                [+]
+              </button>
+            </div>
+            <CategoryList /> {/* Render the CategoryList component */}
           </div>
         )}
 
         {activeSection === "profile" && (
           <div className="mt-6 mx-14">
             <div className="mb-2">
-            <ProfileInfo userId={1} />
+              <ProfileInfo userId={1} />
             </div>
             <ProfileForm userId={1} onClose={() => setActiveSection(null)} />
           </div>
@@ -208,6 +222,20 @@ const Page = () => {
             <AddArticle />
             <button
               onClick={handleAddArticleModalClose}
+              className="mt-4 bg-gray-500 text-white px-4 py-2 rounded"
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
+
+      {isAddCategoryModalOpen && ( // Modal for adding a category
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-8 rounded shadow-lg max-w-lg w-full">
+            <CategoryForm onSuccess={handleAddCategoryModalClose} /> {/* Render the CategoryForm component */}
+            <button
+              onClick={handleAddCategoryModalClose}
               className="mt-4 bg-gray-500 text-white px-4 py-2 rounded"
             >
               Fermer

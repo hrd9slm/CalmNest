@@ -43,7 +43,7 @@ function Footer() {
             href="javascript:void(0)"
             className="text-gray-500 hover:text-gray-800 text-[15px]"
           >
-            Web Development
+            lorem loremm
           </a>
         </li>
         <li>
@@ -51,7 +51,7 @@ function Footer() {
             href="javascript:void(0)"
             className="text-gray-500 hover:text-gray-800 text-[15px]"
           >
-            Mobile App Development
+           em elit interdum 
           </a>
         </li>
         <li>
@@ -59,7 +59,7 @@ function Footer() {
             href="javascript:void(0)"
             className="text-gray-500 hover:text-gray-800 text-[15px]"
           >
-            UI/UX Design
+            lorem loremm
           </a>
         </li>
         <li>
@@ -67,7 +67,7 @@ function Footer() {
             href="javascript:void(0)"
             className="text-gray-500 hover:text-gray-800 text-[15px]"
           >
-            Digital Marketing
+            lorem loremm
           </a>
         </li>
       </ul>
@@ -80,7 +80,7 @@ function Footer() {
             href="javascript:void(0)"
             className="text-gray-500 hover:text-gray-800 text-[15px]"
           >
-            Webinars
+           lorem loremm
           </a>
         </li>
         <li>
@@ -88,7 +88,7 @@ function Footer() {
             href="javascript:void(0)"
             className="text-gray-500 hover:text-gray-800 text-[15px]"
           >
-            Ebooks
+            lorem loremm
           </a>
         </li>
         <li>
@@ -96,7 +96,7 @@ function Footer() {
             href="javascript:void(0)"
             className="text-gray-500 hover:text-gray-800 text-[15px]"
           >
-            Templates
+           lorem loremm
           </a>
         </li>
         <li>
@@ -104,7 +104,7 @@ function Footer() {
             href="javascript:void(0)"
             className="text-gray-500 hover:text-gray-800 text-[15px]"
           >
-            Tutorials
+            lorem loremm
           </a>
         </li>
       </ul>

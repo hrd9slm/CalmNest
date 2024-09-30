@@ -1,31 +1,43 @@
 "use client";
 import React, { useState } from "react";
+import { fetchFormData } from '../../utils/fetchFormData';
 
 const AddArticle = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [image, setImage] =useState<File | null>(null);
- 
+  const [image, setImage] = useState<File | null>(null);
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-  
-    const newArticle = {
-      title,
-      content,
-      image,
-  
-    };
+    if (!image) {
+      alert("Please select an image to upload.");
+      return;
+    }
 
- 
-    console.log("Article submitted:", newArticle);
+    // Create a FormData object
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("image", image);
 
+    try {
+      // Use the fetchFormData function to send the request
+      const response = await fetchFormData('/article', {
+        method: 'POST',
+        body: formData,
+      });
 
-    setTitle("");
-    setContent("");
-    setImage(null);
-    
+      console.log("Article submitted successfully:", response);
+
+      // Reset form fields
+      setTitle("");
+      setContent("");
+      setImage(null);
+    } catch (error) {
+      console.error("Error submitting article:", error);
+      alert("There was an error submitting the article.");
+    }
   };
 
   return (
@@ -68,17 +80,14 @@ const AddArticle = () => {
             type="file"
             id="image"
             onChange={(e) => {
-                const files = (e.target as HTMLInputElement).files;
-                if (files && files.length > 0) {
-                  setImage(files[0]);
-                }
-              }}
-            
+              const files = (e.target as HTMLInputElement).files;
+              if (files && files.length > 0) {
+                setImage(files[0]);
+              }
+            }}
             className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
           />
         </div>
-
-  
 
         <button
           type="submit"

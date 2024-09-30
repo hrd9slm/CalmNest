@@ -5,8 +5,7 @@ import { getIdFromToken } from '../utils/jwt';
 
 const prisma = new PrismaClient();
 
-// Helper function to upload image to Cloudinary
-// Helper function to upload image to Cloudinary
+
 const uploadImageToCloudinary = (fileBuffer: Buffer): Promise<any> => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
@@ -23,7 +22,7 @@ const uploadImageToCloudinary = (fileBuffer: Buffer): Promise<any> => {
   });
 };
 
-// Create a new category
+
 export const createCategory = async (req: Request, res: Response) => {
   const { title } = req.body;
   const imageFile = req.file;
@@ -58,7 +57,7 @@ export const createCategory = async (req: Request, res: Response) => {
   }
 };
 
-// Get all categories
+
 export const getAllCategories = async (req: Request, res: Response) => {
   try {
     const categories = await prisma.category.findMany({
@@ -71,7 +70,7 @@ export const getAllCategories = async (req: Request, res: Response) => {
   }
 };
 
-// Get a single category by ID
+
 export const getCategoryById = async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -92,7 +91,7 @@ export const getCategoryById = async (req: Request, res: Response) => {
   }
 };
 
-// Update a category
+
 export const updateCategory = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { title } = req.body;
@@ -121,7 +120,7 @@ export const updateCategory = async (req: Request, res: Response) => {
   }
 };
 
-// Delete a category
+
 export const deleteCategory = async (req: Request, res: Response) => {
   const { id } = req.params;
 

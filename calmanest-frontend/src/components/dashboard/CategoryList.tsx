@@ -48,7 +48,6 @@ const CategoryList: React.FC = () => {
   };
 
   const handleModalSave = async () => {
-    // Implement save logic here
     handleModalClose();
     fetchCategories();
   };

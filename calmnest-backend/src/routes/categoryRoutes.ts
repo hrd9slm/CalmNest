@@ -1,8 +1,6 @@
-// categoryRoutes.ts
-
 import express from 'express';
 import { createCategory, getAllCategories, getCategoryById, updateCategory, deleteCategory } from '../controllers/categoryController';
-import upload from '../middlewares/uploadMiddleware';
+import {upload} from '../middlewares/uploadMiddleware';
 import authenticateUser from "../middlewares/AuthMiddleware";
 import { IsAdmin } from "../middlewares/IsAdminMiddleware";
 
@@ -10,7 +8,7 @@ import { IsAdmin } from "../middlewares/IsAdminMiddleware";
 const categoryRouter = express.Router();
 
 
-categoryRouter.post('/category', authenticateUser,IsAdmin, upload.single('image'), createCategory);
+categoryRouter.post('/categories', authenticateUser,IsAdmin, upload.single('image'), createCategory);
 
 
 categoryRouter.get('/categories', authenticateUser,IsAdmin, getAllCategories);

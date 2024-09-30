@@ -20,6 +20,21 @@ interface ProfileData {
   bio?: string;
 }
 
+const emptyProfile: ProfileData = {
+  user: {
+    firstName: '',
+    lastName: '',
+    email: '',
+    gender: '',
+    birthDate: '',
+    role: '',
+  },
+  qualifications: [],
+  experience: [],
+  profilePicture: '',
+  bio: '',
+};
+
 const ProfileInfo: React.FC<ProfileInfoProps> = ({ userId }) => {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -28,18 +43,23 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ userId }) => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const data = await fetchInstance(`/profile/${userId}`);
+        const data = await fetchInstance('/profile'); // No userId in the URL
         setProfile(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Erreur lors de la récupération du profil:', error);
-        setError('Erreur lors de la récupération du profil');
+      } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+          // If the server responds with a 404, set an empty profile
+          setProfile(emptyProfile);
+        } else {
+          console.error('Erreur lors de la récupération du profil:', error);
+          setError('Erreur lors de la récupération du profil');
+        }
+      } finally {
         setLoading(false);
       }
     };
 
     fetchProfile();
-  }, [userId]);
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;

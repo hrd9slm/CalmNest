@@ -1,14 +1,12 @@
-// middleware/uploadMiddleware.ts
-
 import multer from 'multer';
 
-// Configure Multer to store files in memory
+
 const storage = multer.memoryStorage();
 
-// Initialize Multer with memory storage
+
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 1024 * 1024 * 5 }, // Limit file size to 5MB
+  limits: { fileSize: 1024 * 1024 * 5 }, 
   fileFilter: (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif/;
     const extname = allowedTypes.test(file.originalname.toLowerCase());
@@ -21,5 +19,21 @@ const upload = multer({
     }
   },
 });
+const uploadVideos = multer({
+  storage: storage,
+  limits: { fileSize: 1024 * 1024 * 50 }, // Limit file size to 50MB for videos
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /mp4|avi|mkv|mov/;
+    const extname = allowedTypes.test(file.originalname.toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
 
-export default upload;
+    if (extname && mimetype) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only videos are allowed'));
+    }
+  },
+});
+
+
+export  {upload,uploadVideos};

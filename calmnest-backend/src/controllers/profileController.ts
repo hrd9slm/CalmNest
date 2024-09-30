@@ -1,15 +1,26 @@
-// profileController.ts
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
+import { getIdFromToken } from '../utils/jwt';
+
 
 const prisma = new PrismaClient();
 
-// Fonction pour récupérer un profil avec les informations de l'utilisateur
+
 async function getProfile(req: Request, res: Response) {
-  const { userId } = req.params;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Authorization token is required.' });
+  }
+
+  const userId = getIdFromToken(token);
+
+  if (!userId) {
+    return res.status(401).json({ message: 'Invalid token.' });
+  }
 
   try {
-    // Récupérer le profil avec les informations de l'utilisateur
+ 
     const profile = await prisma.profile.findUnique({
       where: { userId: Number(userId) },
       include: {
@@ -27,32 +38,42 @@ async function getProfile(req: Request, res: Response) {
     });
 
     if (!profile) {
-      return res.status(404).json({ message: 'Profil non trouvé.' });
+      return res.status(404).json({ message: 'Profile not found.' });
     }
 
     return res.status(200).json(profile);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Erreur lors de la récupération du profil.' });
+    return res.status(500).json({ message: 'Error retrieving profile.' });
   }
 }
 
-// Fonction pour mettre à jour un profil
+
 async function updateProfile(req: Request, res: Response) {
-  const { userId } = req.params;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Authorization token is required.' });
+  }
+
+  const userId = getIdFromToken(token);
+
+  if (!userId) {
+    return res.status(401).json({ message: 'Invalid token.' });
+  }
+
   const { qualifications, experience, profilePicture, bio } = req.body;
 
   try {
-    // Vérifier si le profil existe
     const existingProfile = await prisma.profile.findUnique({
       where: { userId: Number(userId) },
     });
 
     if (!existingProfile) {
-      return res.status(404).json({ message: 'Profil non trouvé.' });
+      return res.status(404).json({ message: 'Profile not found.' });
     }
 
-    // Mettre à jour le profil
+  
     const updatedProfile = await prisma.profile.update({
       where: { userId: Number(userId) },
       data: {
@@ -66,9 +87,8 @@ async function updateProfile(req: Request, res: Response) {
     return res.status(200).json(updatedProfile);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Erreur lors de la mise à jour du profil.' });
+    return res.status(500).json({ message: 'Error updating profile.' });
   }
 }
-
 
 export { getProfile, updateProfile };

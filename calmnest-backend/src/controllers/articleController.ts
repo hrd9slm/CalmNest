@@ -1,25 +1,51 @@
 import { PrismaClient } from '@prisma/client';
 import cloudinary from '../../cloudinaryConfig';
 import { Request, Response } from 'express';
+import { getIdFromToken } from '../utils/jwt';
 
 const prisma = new PrismaClient();
 
+// Helper function to upload image to Cloudinary using buffer
+const uploadImageToCloudinary = (fileBuffer: Buffer): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { folder: 'articles' },
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+    uploadStream.end(fileBuffer);
+  });
+};
+
 // Create a new article
 export const createArticle = async (req: Request, res: Response) => {
-  const { title, content, userId } = req.body;
-  const imageFile = req.file; // Assuming you're using a middleware like multer for file uploads
+  const { title, content } = req.body;
+  const imageFile = req.file; 
+  const token = req.headers.authorization?.split(' ')[1];
 
   if (!imageFile) {
     return res.status(400).json({ error: 'Image file is required' });
   }
 
-  try {
-    // Upload image to Cloudinary
-    const uploadResult = await cloudinary.uploader.upload(imageFile.path, {
-      folder: 'articles',
-    });
+  if (!token) {
+    return res.status(401).json({ error: 'Authorization token is required' });
+  }
 
-    // Create article in the database
+  const userId = getIdFromToken(token);
+  if (!userId) {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
+
+  try {
+    
+    const uploadResult = await uploadImageToCloudinary(imageFile.buffer);
+
+   
     const article = await prisma.article.create({
       data: {
         title,
@@ -37,7 +63,7 @@ export const createArticle = async (req: Request, res: Response) => {
   }
 };
 
-// Get all articles
+
 export const getAllArticles = async (req: Request, res: Response) => {
   try {
     const articles = await prisma.article.findMany({
@@ -50,7 +76,7 @@ export const getAllArticles = async (req: Request, res: Response) => {
   }
 };
 
-// Get a single article by ID
+
 export const getArticleById = async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -71,7 +97,7 @@ export const getArticleById = async (req: Request, res: Response) => {
   }
 };
 
-// Update an article
+
 export const updateArticle = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { title, content } = req.body;
@@ -81,10 +107,8 @@ export const updateArticle = async (req: Request, res: Response) => {
     let imageUrl: string | undefined;
 
     if (imageFile) {
-      // Upload new image to Cloudinary
-      const uploadResult = await cloudinary.uploader.upload(imageFile.path, {
-        folder: 'articles',
-      });
+   
+      const uploadResult = await uploadImageToCloudinary(imageFile.buffer);
       imageUrl = uploadResult.secure_url;
     }
 
@@ -104,7 +128,6 @@ export const updateArticle = async (req: Request, res: Response) => {
   }
 };
 
-// Delete an article
 export const deleteArticle = async (req: Request, res: Response) => {
   const { id } = req.params;
 

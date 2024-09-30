@@ -22,7 +22,6 @@ const NavBar: React.FC = () => {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
 
-
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -93,7 +92,7 @@ const NavBar: React.FC = () => {
             <li className="max-lg:border-b border-gray-300 max-lg:py-3 px-3">
               <Link
                 href="/"
-                className="hover:text-light-pink text-light-pink block font-semibold text-[15px]"
+                className="hover:text-light-pink text-gray-500 block font-semibold text-[15px]"
               >
                 Home
               </Link>
@@ -151,66 +150,8 @@ const NavBar: React.FC = () => {
               {isDropdownOpen && (
                 <ul className="absolute left-0 mt-2 w-64 bg-white border border-gray-200 rounded-md shadow-lg">
                   <li className="px-4 py-2 hover:bg-light-pink-50">
-                    <Link href="/services/meditations">
+                    <Link href="/meditations">
                       Méditations & Pleine conscience
-                    </Link>
-                  </li>
-                  <li className="px-4 py-2 hover:bg-light-pink-50">
-                    <Link href="/services/sleepcasts">
-                      Histoires pour s'endormir & Relaxation
-                    </Link>
-                  </li>
-                  <li className="px-4 py-2 hover:bg-light-pink-50">
-                    <Link href="/services/focus-music">
-                      Musique de concentration & Exercices
-                    </Link>
-                  </li>
-                  <li className="px-4 py-2 hover:bg-light-pink-50">
-                    <Link href="/services/guided-movement">
-                      Mouvement guidé
-                    </Link>
-                  </li>
-                  <li className="px-4 py-2 hover:bg-light-pink-50">
-                    <Link href="/services/chat-coaching">
-                      Coaching par chat
-                    </Link>
-                  </li>
-                  <li className="px-4 py-2 hover:bg-light-pink-50">
-                    <Link href="/services/therapy">Thérapie</Link>
-                  </li>
-                  <li className="px-4 py-2 hover:bg-light-pink-50">
-                    <Link href="/services/psychiatry">
-                      Psychiatrie (États-Unis uniquement)
-                    </Link>
-                  </li>
-                  <li className="px-4 py-2 hover:bg-light-pink-50">
-                    <Link href="/services/specialty-care">
-                      Soins spécialisés
-                    </Link>
-                  </li>
-                  <li className="px-4 py-2 hover:bg-light-pink-50">
-                    <Link href="/services/complex-case-management">
-                      Gestion des cas complexes
-                    </Link>
-                  </li>
-                  <li className="px-4 py-2 hover:bg-light-pink-50">
-                    <Link href="/services/work-life">
-                      Services de conciliation travail-vie personnelle
-                    </Link>
-                  </li>
-                  <li className="px-4 py-2 hover:bg-light-pink-50">
-                    <Link href="/services/critical-incident-support">
-                      Support en cas d'incident critique
-                    </Link>
-                  </li>
-                  <li className="px-4 py-2 hover:bg-light-pink-50">
-                    <Link href="/services/workplace-trainings">
-                      Formations en milieu de travail
-                    </Link>
-                  </li>
-                  <li className="px-4 py-2 hover:bg-light-pink-50">
-                    <Link href="/services/management-support">
-                      Support et consultations pour la gestion
                     </Link>
                   </li>
                 </ul>

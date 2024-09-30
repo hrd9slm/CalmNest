@@ -1,5 +1,5 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import { fetchInstance } from '../../utils/fetchInstance';
+import React, { useState, useEffect, FormEvent } from 'react';
+import { fetchFormData } from '../../utils/fetchFormData'; 
 
 interface Category {
   id?: number;
@@ -34,13 +34,13 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category, onSuccess }) => {
     try {
       if (category?.id) {
         // Update category
-        await fetchInstance(`/categories/${category.id}`, {
+        await fetchFormData(`/categories/${category.id}`, {
           method: 'PUT',
           body: formData,
         });
       } else {
         // Create new category
-        await fetchInstance('/categories', {
+        await fetchFormData('/categories', {
           method: 'POST',
           body: formData,
         });
